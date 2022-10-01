@@ -1,0 +1,26 @@
+*
+{
+    font: 1rem "Fira Sans", sans-serif;
+}
+
+fieldset
+{
+  margin-top: 30px;
+}
+
+legend
+{
+    background-color: #000;
+    color: #fff;
+    padding: 3px 6px;
+}
+
+label
+{
+    cursor: pointer;
+}
+
+input[type="text"]
+{
+    width: 500px;
+}

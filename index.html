@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Outils subnetting IPv4</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <script src="Tools.js"></script>
+  <script src="Mask.js"></script>
+</head>
+
+<body>
+  <fieldset>
+    <legend>Écritures d'un masque de sous-réseau</legend>
+    <table>
+        <tr>
+          <td>
+            <label for="_1_binaryMask">Masque au format binaire :</label>
+          </td>
+          <td>
+            <input id="_1_binaryMask" type="text" />
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <label for="_1_decimalMask">Masque au format décimal :</label>
+          </td>
+          <td>
+            <input id="_1_decimalMask" type="text" />
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <label for="_1_CIDR">CIDR :</label>
+          </td>
+          <td>
+            <input id="_1_CIDR" type="text" />
+          </td>
+        </tr>
+    </table>
+  </fieldset>
+
+
+  <script>
+    document.getElementById("_1_binaryMask").addEventListener("input", function()
+    {
+      document.getElementById("_1_decimalMask").value = Mask.binary.toDecimal(this.value);
+      document.getElementById("_1_CIDR").value = Mask.binary.toCIDR(this.value);
+    });
+
+    document.getElementById("_1_decimalMask").addEventListener("input", function()
+    {
+      document.getElementById("_1_binaryMask").value = Mask.decimal.toBinary(this.value);
+      document.getElementById("_1_CIDR").value = Mask.decimal.toCIDR(this.value);
+    });
+
+    document.getElementById("_1_CIDR").addEventListener("input", function()
+    {
+      document.getElementById("_1_binaryMask").value = Mask.CIDR.toBinary(this.value);
+      document.getElementById("_1_decimalMask").value = Mask.CIDR.toDecimal(this.value);
+    });
+  </script>
+
+
+  <fieldset>
+    <legend>Correspondance nombre d'hôtes/masque</legend>
+    <table>
+      <tr>
+        <td>
+          <label for="_2_hosts">Nombre d'hôtes :</label>
+        </td>
+        <td>
+          <input id="_2_hosts" type="text" />
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <label for="_2_requiredBits">Nombre de bits hôtes requis :</label>
+        </td>
+        <td>
+          <input id="_2_requiredBits" type="text" />
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <label for="_3_calc">CIDR associé :</label>
+        </td>
+        <td>
+          <input type="text" id="_3_calc" />
+        </td>
+      </tr>
+    </table>
+  </fieldset>
+
+      Pas ouf pcq ça dépend de masque de base : si masque /8, alors si on a 10 hotes : besoin de 4 bits hostID. Donc masque = 32 - 4 = /28
+    Mais faut voir si y'a la place de tout faire rentrer bref un bordel sans nom
+
+  <script>
+    document.getElementById("_2_hosts").addEventListener("input", function()
+    {
+      let v = Mask.host.requiredBits(parseInt(this.value, 10));
+      document.getElementById("_2_requiredBits").value = v;
+      document.getElementById("_3_calc").value = "/" + (32 - parseInt(v, 10));
+    });
+
+    document.getElementById("_2_requiredBits").addEventListener("input", function()
+    {
+      document.getElementById("_3_calc").value = "/" + (32 - parseInt(this.value, 10));
+      document.getElementById("_2_hosts").value = Mask.host.maxHosts(parseInt(this.value, 10));
+    });
+  </script>
+</body>
+
+</html>
